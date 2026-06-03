@@ -1,0 +1,10 @@
+package com.vision.app.ui.screens.login
+
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class LoginViewModel @Inject constructor() : ViewModel() {
+    val isAdmin: Boolean = false
+}

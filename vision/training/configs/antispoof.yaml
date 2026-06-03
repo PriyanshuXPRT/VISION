@@ -1,0 +1,13 @@
+"""Anti-spoofing (MiniFASNetV2) training config."""
+defaults:
+  - antispoof
+  - _self_
+
+run_name: minifasnet_v2
+root: datasets/antispoof_processed
+batch_size: 256
+epochs: 30
+lr: 3.0e-4
+output: models/checkpoints/antispoof/${run_name}
+num_workers: 8
+amp: true

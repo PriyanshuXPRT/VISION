@@ -1,0 +1,18 @@
+"""Recognition (ArcFace) training config."""
+defaults:
+  - recognition
+  - _self_
+
+run_name: arcface_r100_baseline
+root: datasets/face_recognition_processed/casia_webface
+backbone: r100
+loss: arcface
+margin: 0.5
+scale: 30.0
+batch_size: 256
+epochs: 26
+lr: 0.1
+embedding_dim: 512
+output: models/checkpoints/recognition/${run_name}
+num_workers: 8
+amp: true

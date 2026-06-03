@@ -1,0 +1,31 @@
+name: model-release
+
+on:
+  push:
+    tags: ["model-v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1 libglib2.0-0
+          pip install -r requirements.txt
+      - name: Build ONNX models
+        run: |
+          python -m vision.onnx.exporters.export_onnx all --out-dir onnx_models
+          python -m vision.onnx.quantization.quantize --in onnx_models/detection/scrfd_10g_bnkps.onnx --out onnx_models/detection/scrfd_10g_bnkps.fp16.onnx --fp16
+      - name: Validate
+        run: |
+          python -m vision.onnx.validation.validate --src onnx_models/detection/scrfd_10g_bnkps.onnx
+      - uses: actions/upload-artifact@v4
+        with:
+          name: onnx-bundle
+          path: onnx_models/
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: onnx_models/**

@@ -1,0 +1,32 @@
+name: android-ci
+
+on:
+  push:
+    branches: [main]
+    paths: ["android-app/**"]
+  pull_request:
+    paths: ["android-app/**"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - name: Grant execute permission for gradlew
+        run: chmod +x android-app/gradlew
+      - name: Build
+        working-directory: android-app
+        run: ./gradlew :app:assembleDebug
+      - name: Unit tests
+        working-directory: android-app
+        run: ./gradlew :app:testDebugUnitTest
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: android-app/app/build/outputs/apk/debug/*.apk

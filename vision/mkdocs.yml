@@ -1,0 +1,36 @@
+site_name: V.I.S.I.O.N. Docs
+site_description: V.I.S.I.O.N. — Verification and Intelligent Spoofing-resistant Identity Optimization Network
+site_author: V.I.S.I.O.N. Team
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+    - scheme: slate
+      primary: indigo
+  features:
+    - navigation.tabs
+    - navigation.indexes
+    - search.suggest
+
+nav:
+  - Home: README.md
+  - Architecture: documentation/architecture/ARCHITECTURE.md
+  - API: documentation/api/API.md
+  - Database: documentation/database/DATABASE.md
+  - Security: documentation/security/SECURITY.md
+  - Deployment: documentation/deployment/DEPLOYMENT.md
+  - User manual: documentation/user/USER.md
+  - Developer guide: documentation/developer/DEVELOPER.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.insert(0, ".")
+          options:
+            docstring_style: google

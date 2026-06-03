@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude domain="database" path="vision.db" />
+    <exclude domain="sharedpref" path="secure_prefs.xml" />
+    <exclude domain="file" path="models/" />
+</full-backup-content>

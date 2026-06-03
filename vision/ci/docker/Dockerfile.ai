@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1.7
+
+# ---- Stage 1: build base with torch + onnx ----
+FROM python:3.11-slim AS base
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libgl1 libglib2.0-0 ffmpeg curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/vision
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY vision/ ./vision/
+COPY training/ ./training/
+COPY pyproject.toml ./
+
+RUN pip install -e .
+
+# ---- Stage 2: runtime (smaller) ----
+FROM python:3.11-slim AS runtime
+ENV PYTHONUNBUFFERED=1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 libglib2.0-0 ffmpeg curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /opt/vision
+COPY --from=base /opt/vision /opt/vision
+EXPOSE 8000
+CMD ["python", "-m", "vision.core.demo"]

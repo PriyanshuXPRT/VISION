@@ -1,0 +1,87 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# Project artefacts
+vision/models/checkpoints/**/*.pt
+vision/models/checkpoints/**/*.pth
+vision/models/checkpoints/**/*.ckpt
+vision/onnx_models/**/*.onnx
+vision/models/**/*.onnx
+logs/
+*.log
+runs/
+mlruns/
+wandb/
+
+# Datasets (large)
+datasets/
+data/raw/
+data/processed/
+*.zip
+*.tar
+*.tar.gz
+*.parquet
+*.h5
+*.hdf5
+
+# Android
+android-app/.gradle/
+android-app/build/
+android-app/local.properties
+android-app/captures/
+android-app/.externalNativeBuild/
+android-app/.cxx/
+android-app/app/release/
+android-app/app/debug/
+*.apk
+*.aab
+*.iml
+
+# Secrets
+.env
+.env.*
+!.env.example
+secrets.yaml
+secrets.json
+*.pem
+*.key
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Backend
+backend/.venv/
+backend/**/__pycache__/
+backend/.pytest_cache/

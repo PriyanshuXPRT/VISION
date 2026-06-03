@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=68", "wheel", "setuptools_scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vision"
+version = "0.1.0"
+description = "Verification and Intelligent Spoofing-resistant Identity Optimization Network"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "V.I.S.I.O.N. Team"}]
+keywords = ["face-recognition", "anti-spoofing", "liveness", "biometrics", "android", "onnx"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python>=4.9",
+    "onnxruntime>=1.17",
+    "insightface>=0.7",
+    "mediapipe>=0.10",
+    "pydantic>=2.7",
+    "loguru>=0.7",
+    "typer>=0.11",
+]
+
+[project.optional-dependencies]
+gpu = ["onnxruntime-gpu>=1.17", "faiss-gpu-cu12"]
+training = ["torch>=2.2", "pytorch-lightning>=2.2", "albumentations>=1.4", "wandb", "mlflow"]
+backend = ["fastapi>=0.111", "uvicorn[standard]>=0.29", "sqlalchemy>=2.0", "alembic>=1.13", "psycopg2-binary>=2.9"]
+quant = ["onnxruntime-tools>=1.17", "neural-compressor>=2.5"]
+docs = ["mkdocs>=1.6", "mkdocs-material>=9.5", "mkdocstrings[python]>=0.24"]
+dev = ["pytest>=8", "pytest-cov", "pytest-asyncio", "ruff", "mypy", "black", "isort", "pre-commit"]
+
+[project.scripts]
+vision-demo = "vision.core.demo:main"
+vision-register = "vision.registration.cli:main"
+vision-identify = "vision.identification.cli:main"
+vision-export-onnx = "vision.onnx.exporters.export_onnx:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vision*", "training*"]
+exclude = ["tests*", "evaluation*", "documentation*", "scripts*", "ci*", "mlops*", "backend*", "android-app*", "datasets*", "models*", "onnx_models*", "deployment*", "database*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["build", "dist", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "W", "C4", "SIM", "RUF"]
+ignore = ["E501", "B008", "RUF012"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra -q --strict-markers --strict-config"
+markers = [
+    "slow: marks tests as slow",
+    "gpu: marks tests as requiring GPU",
+    "integration: integration tests",
+    "security: anti-spoofing security tests",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["vision", "training"]
+omit = ["*/tests/*", "*/__init__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_lines = ["pragma: no cover", "raise NotImplementedError", "if __name__ == .__main__.:"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]

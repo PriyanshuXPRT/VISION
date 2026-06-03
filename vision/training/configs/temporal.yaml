@@ -1,0 +1,14 @@
+"""Temporal liveness (LSTM) training config."""
+defaults:
+  - temporal
+  - _self_
+
+run_name: lstm_v1
+features: datasets/temporal/features.npy
+labels: datasets/temporal/labels.npy
+hidden_dim: 64
+num_layers: 2
+batch_size: 64
+epochs: 30
+lr: 1.0e-3
+output: models/checkpoints/temporal/${run_name}

@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: ci/docker/Dockerfile.backend
+    container_name: vision-backend
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      VISION_BACKEND_DATABASE_URL: postgresql+psycopg2://vision:vision@db:5432/vision
+      VISION_BACKEND_DEBUG: "false"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    container_name: vision-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vision
+      POSTGRES_PASSWORD: vision
+      POSTGRES_DB: vision
+    volumes:
+      - vision_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  vision_pgdata:
