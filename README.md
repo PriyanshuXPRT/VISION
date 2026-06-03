@@ -19,7 +19,7 @@ A 100% offline-capable, RGB-camera-only biometric authentication system that:
 
 ---
 
-## 2. High-Level Architecture
+## 2.Architecture
 
 ```
                           ┌─────────────────────────────┐
@@ -49,7 +49,7 @@ Full architecture: [`documentation/architecture/ARCHITECTURE.md`](documentation/
 
 ---
 
-## 3. Repository Layout
+## 3.Layout
 
 ```
 vision/
